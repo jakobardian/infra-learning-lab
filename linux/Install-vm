@@ -1,0 +1,35 @@
+# Instalasi Virtual Machine **VMware Workstation**
+
+Dokumentasi ini berisi langkah instalasi VMware Workstation
+yang digunakan untuk menjalankan OS Linux sebagai learning lab.
+
+---
+
+## Tujuan
+- Menyiapkan aplikasi virtual machine
+- Membuat learning lab berbasis OS Linux
+- Digunakan untuk praktik administrasi sistem
+
+---
+
+## Environment
+- Host OS : Windows
+- Software: VMware Workstation Pro (ver: 25H2)
+
+---
+
+## Langkah Instalasi
+
+### 1. Download VMware Workstation
+Download virtual machine VMware Workstation pada website resmi vmware.com
+source: https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion
+
+### 2. Proses Instalasi
+- Jalankan file installer
+- Accept End-User Lincese Agreement
+- Ikuti proses instalasi hingga selesai
+
+---
+
+## Kendala
+Belum ditemukan.
