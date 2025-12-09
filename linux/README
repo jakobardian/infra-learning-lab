@@ -1,0 +1,17 @@
+# Linux Lab
+Folder ini berisi proses pembelajaran Linux, mulai dari proses instalasi, setup, hingga praktik.
+
+## Tujuan
+- Menyiapkan environment Linux berbasis virtual machine
+- Memahami proses instalasi OS Linux secara mendalam
+- Menguasai perintah dasar Linux (command line)
+- Menjadi dasar untuk praktik administrasi sistem Linux
+
+## Environment
+- Host OS: Windows
+- Hypervisor: VMware Workstation
+- Guest OS: Ubuntu Server
+
+## Isi folder
+- Install & setup Virtual Machine VMware Workstation
+- *coming soon*
