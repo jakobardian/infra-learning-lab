@@ -26,8 +26,17 @@ praktik langsung dan memahami konsep user acces management dalam sistem Linux.
 
 ## Steps
 ### 1. Create User Accounts
-Manual Command      : ```sudo useradd -m -s /bin/zsh [user_name]```
-Automation Command  : ```while read -r user; do sudo useradd -m -s /bin/zsh "$user" done < users.txt```
+Manual Command
+```zsh
+sudo useradd -m -s /bin/zsh [user_name]
+```
+
+Automation Command
+```zsh
+while read -r user; do
+    sudo useradd -m -s /bin/zsh "$user"
+done < users.txt
+```
 
 - (-m)          : Otomatis membuat home directory
 - (-s)          : Menentukan default login shell
@@ -36,7 +45,7 @@ Automation Command  : ```while read -r user; do sudo useradd -m -s /bin/zsh "$us
 - Cleanup       : **sudo userdel -r [user_name]**
 
 
-2. Set User Password 
+### 2. Set User Password 
 Membuat password untuk user baru
 
 Command1: **sudo passwd [user_name]**
