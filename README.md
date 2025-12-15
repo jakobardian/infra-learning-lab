@@ -29,8 +29,6 @@ serta catatan troubleshooting jika diperlukan.
 ## Documentation Approach
 - Seluruh dokumentasi ditulis berdasarkan praktik langsung
 - Setiap keputusan teknis dicatat secara singkat dan jelas
-- Error dan kendala dicantumkan dalam format problem–solution
-- Tidak menggunakan copy-paste dari course atau tutorial eksternal
 
 ---
 
