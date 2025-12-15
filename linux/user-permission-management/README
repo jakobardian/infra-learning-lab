@@ -1,49 +1,45 @@
 # User and Permission Management
-Manajemen izin/akses dan pengguna
 
 ---
 
-## Objectives
-Tujuan dari praktik ini adalah untuk memahami dan mampu 
-melakukan proses dasar administrasi user, group, dan permission di Linux
+## Overview
+Dokumen ini berisi praktik dasar administrasi user, group, dan permission di Linux,
+termasuk automation sederhana menggunakan shell script. Lab ini bertujuan untuk memiliki pengalaman 
+praktik langsung dan memahami konsep user acces management dalam sistem Linux. 
 
 ---
 
-## Environtment
-- Ubuntu 24.04
-- Zsh shell
-- Tools: useradd, groupadd, passwd, chmod, chown, visudo
+## Environment
+- OS: Ubuntu 24.04
+- Shell: Zsh
+- Tools: useradd, groupadd, usermod, passwd, chmod, chown, journalctl
 
 ---
 
-## Dummy Scenario
-- Users     : Vanny, Chella, Grace, Stacey, Maureen, Gabriella, Stella, Sherly, Felicia, Michelle, Jessyln
-              Vanessa, Aurelia, Clarissa, Shania, Zoey, Audrey, Olive, Ashley, Tiffany
-- Groups    : Developer, Database, Operation
-- Folder    : /var/projects/learning-demo-app
+## Scenario
+- Users                : Vanny, Chella, Grace, Stacey, Maureen, Gabriella, Stella, Sherly, Felicia, Michelle, Jessyln
+                         Vanessa, Aurelia, Clarissa, Shania, Zoey, Audrey, Olive, Ashley, Tiffany
+- Groups               : Developer, Database, Operation
+- Working Direectory   : /var/projects/learning-demo-app
 
 ---
 
 ## Steps
-1. Create User Accounts
-Membuat akun user baru.
+### 1. Create User Accounts
+Manual Command      : ```sudo useradd -m -s /bin/zsh [user_name]```
+Automation Command  : ```while read -r user; do sudo useradd -m -s /bin/zsh "$user" done < users.txt```
 
-Command: **sudo useradd -m -s /bin/zsh [user_name]**
-
-- (-m): otomatis membuat home directory
-- (-s): menentukan default login shell
-- Check command: **getent passwd [user_name]**
-- Delete user: **sudo userdel -r [user_name]**
+- (-m)          : Otomatis membuat home directory
+- (-s)          : Menentukan default login shell
+- Note          : Automation mode harus memiliki file list user dalam bentuk users.txt
+- Verification  : **getent passwd [user_name]**
+- Cleanup       : **sudo userdel -r [user_name]**
 
 
 2. Set User Password 
 Membuat password untuk user baru
 
 Command1: **sudo passwd [user_name]**
-Command2: **echo "[user_name]:[password]" | sudo chpasswd**
-
-- Command1: Manual mode
-- Command2: Automation mode
 - Delete password: **sudo passwd -d [user_name]**
 
 
@@ -79,7 +75,7 @@ Set permission : **sudo chmod 770 /var/project/learning-demo-app**
 - Check command: ls -ld [file_name]
 
 
-7. Verify Permissions and User Access
+6. Verify Permissions and User Access
 Validasi Akses File dari Masing-masing User
 
 Step:
@@ -91,7 +87,7 @@ Command1: **sudo -u [user_name] "command" [Read/Write/Execute] [folder_name]/[fi
 Command2: **su - [user_name] -c "command" [Read/Write/Execute] [folder_name]/[file_name]
 
 
-8. Audit with Logs
+7. Audit with Logs
 # Login, Logout, and Authentication Logs
 ## aktivitas login, logout, dan gagl autentikasi
 Command1: **sudo journalctl -u ssh**
@@ -110,12 +106,13 @@ Command1: **sudo cat /var/log/auth.log | grep sudo**
 COmmand2: **sudo journalctl | grep sudo**
 
 
-9. Cleanup 
+8. Cleanup 
 Remove user: sudo userdel -r [user_name]
 - (-r): menghapus home directory juga
 Remove group: **sudo groupdel [group_name]**
 Remove directory: **sudo rm -rf [directory_name]**
 - (-rf) hapus paksa directory
+- Delete user automation: **for user in [user1] [user2] [user3]; do sudo userdel -r "$user"; done**
 
 Verify
 getent passwd | grep -E [user_name]
