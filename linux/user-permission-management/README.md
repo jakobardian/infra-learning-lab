@@ -30,101 +30,159 @@ Manual Command
 ```zsh
 sudo useradd -m -s /bin/zsh [user_name]
 ```
-
 Automation Command
 ```zsh
 while read -r user; do
     sudo useradd -m -s /bin/zsh "$user"
 done < users.txt
 ```
-
+Verification
+```zsh
+getent passwd [user_name]
+```
+Delete User
+```zsh
+sudo userdel -r [user_name]
+```
 - (-m)          : Otomatis membuat home directory
 - (-s)          : Menentukan default login shell
 - Note          : Automation mode harus memiliki file list user dalam bentuk users.txt
-- Verification  : **getent passwd [user_name]**
-- Cleanup       : **sudo userdel -r [user_name]**
-
-
+---
 ### 2. Set User Password 
-Membuat password untuk user baru
-
-Command1: **sudo passwd [user_name]**
-- Delete password: **sudo passwd -d [user_name]**
-
-
-3. Create and Manage Groups
-Membuat group
-
-Command1: **sudo groupadd [group_name]**
-Command2: **sudo groupadd [group_name] || true**
-
-- || true: mode automation
-- Check command: **getent group [group_name]**
-- Delete group: **sudo groupdel [group_name]**
-
-
-4. Assign User to Groups
-Menambahkan user ke group
-
-Command: **sudo usermod -aG [group_name] [user_name]**
-
+Manual Command: 
+```zsh
+sudo passwd [user_name]
+```
+Automation Command
+```zsh
+echo "[user_name]:[password]" | sudo chpasswd
+```
+Delete Password
+```zsh
+sudo passwd -d [user_name]
+```
+---
+### 3. Create and Manage Groups
+Manual Command
+```zsh
+sudo groupadd [group_name]
+```
+Automation Command
+```zsh
+sudo groupadd [group_name] || true
+```
+Verification
+```zsh
+getent group [group_name]
+```
+Delete Group
+```zsh
+sudo groupdel [group_name]
+```
+- || true: Script tetap jalan walaupun group sudah ada 
+---
+### 4. Assign User to Groups
+Command
+```zsh
+sudo usermod -aG [group_name] [user_name]
+```
+Verification
+```zsh
+id [user_name]
+```
+Remove User from Group
+```zsh
+sudo deluser [user_name] [group_name]
+```
 - (-aG): Menambahkan user ke group tanpa menghapus membership group lain
-- Check: **id [user_name]**
-- Delete user from group: **sudo deluser [user_name] [group_name]**
-
-
-5. Set Ownership, and Directory Permissions
-Mengatur hak akses pada file atau direktori
-
-Make file      : **sudo mkdir -p /var/project/learning-demo-app**
-Set ownership  : **sudo chown [user_name]:[group_name] /var/project/learning-demo-app**
-Set permission : **sudo chmod 770 /var/project/learning-demo-app**
-
-- 770:rwxrwx---
-- Check command: ls -ld [file_name]
-
-
-6. Verify Permissions and User Access
-Validasi Akses File dari Masing-masing User
-
+---
+### 5. Set Ownership, and Directory Permissions
+Build Folder/Directory
+```zsh
+sudo mkdir -p /var/project/[folder_name]
+```
+Set Ownership
+```zsh
+sudo chown [user_name]:[group_name] /var/project/[folder_name]
+```
+Set Permission
+```zsh
+sudo chmod [permission_code] /var/project/[folder_name]
+```
+Verification
+```zsh
+ls -ld /var/project/[folder_name]
+```
+- Contoh permission code 770:rwxrwx---
+---
+### 6. Verify Permissions and User Access
 Step:
-- Login sebagai user owner > do Read/Write/Execute > Expected succes
-- Login sebagai member group owner > do Read/Write/Execute > Expected succes
-- Login sebagai non member group & non user owner > do Read/Write/Execute > Expected failed
+- Login sebagai owner > action Read/Write/Execute > Expected succes
+- Login sebagai member group > action Read/Write/Execute > Expected succes
+- Login sebagai non owner & non member group > action Read/Write/Execute > Expected failed
 
-Command1: **sudo -u [user_name] "command" [Read/Write/Execute] [folder_name]/[file_name]
-Command2: **su - [user_name] -c "command" [Read/Write/Execute] [folder_name]/[file_name]
-
-
-7. Audit with Logs
-# Login, Logout, and Authentication Logs
-## aktivitas login, logout, dan gagl autentikasi
-Command1: **sudo journalctl -u ssh**
-Command2: **sudo journalctl -xe**
-## aktivitas mencurigakan atau gagal login
-Command: **sudo journalctl | grep -i "failed"**
-         **sudo journalctl | grep -i "denied"**
-
-# Permission Denied & File Access Audit
-## Aktivitas user gagal membaca, menulis, atau membuat file
-Command1: **sudo journalctl -k | grep -i denied**
-Command2: **sudo dmesg | grep -i denied**
-
-# Sudo Activity Audit
-Command1: **sudo cat /var/log/auth.log | grep sudo**
-COmmand2: **sudo journalctl | grep sudo**
-
-
-8. Cleanup 
-Remove user: sudo userdel -r [user_name]
+Command 1
+```zsh
+sudo -u [user_name] [action] [folder_name]/[file_name]
+```
+Command 2
+```zsh
+su - [user_name] -c [action] [folder_name]/[file_name]
+```
+- Command 1: versi cepat dan praktis
+- Command 2: versi environment user target lengkap
+---
+### 7. Audit with Logs
+Audit - SSH Login
+```zsh
+sudo journalctl -u ssh
+```
+Audit - Error & Failure System
+```zsh
+sudo journalctl -xe
+```
+Audit - Failed
+```zsh
+sudo journalctl | grep -i failed
+```
+Audit - Denied
+```zsh
+sudo journalctl | grep -i denied
+```
+Audit - Permission Denied & File Access - Kernel level denial
+```zsh
+sudo journalctl -k | grep -i denied
+```
+Audit - Permission Denied & File Access - Kernel real-time log 
+```zsh
+sudo dmesg | grep -i denied
+```
+Audit - Sudo Activity
+```zsh
+sudo cat /var/log/auth.log | grep sudo
+```
+```zsh
+sudo journalctl | grep sudo
+```
+---
+### 8. Cleanup
+Remove User
+```zsh
+sudo userdel -r [user_name]
+```
+Delete User Automation
+```zsh
+for user in [user1] [user2] [user3]; do sudo userdel -r "$user"; done
+```
+Remove Group
+```zsh
+sudo groupdel [group_name]
+```
+Remove Directory
+```zsh
+sudo rm -rf [directory_name]
+```
 - (-r): menghapus home directory juga
-Remove group: **sudo groupdel [group_name]**
-Remove directory: **sudo rm -rf [directory_name]**
-- (-rf) hapus paksa directory
-- Delete user automation: **for user in [user1] [user2] [user3]; do sudo userdel -r "$user"; done**
+- (-rf): hapus paksa directory
 
-Verify
-getent passwd | grep -E [user_name]
-getent group | grep -E [group_name]
-ls -ld [directory_name]
-
+---
