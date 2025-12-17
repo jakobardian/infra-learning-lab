@@ -32,9 +32,7 @@ sudo useradd -m -s /bin/zsh [user_name]
 ```
 Automation Command
 ```zsh
-while read -r user; do
-    sudo useradd -m -s /bin/zsh "$user"
-done < users.txt
+while read -r user; do sudo useradd -m -s /bin/zsh "$user" done < users.txt
 ```
 Verification
 ```zsh
